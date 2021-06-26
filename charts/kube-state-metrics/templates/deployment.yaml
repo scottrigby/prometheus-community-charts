@@ -8,18 +8,14 @@ metadata:
   name: {{ template "kube-state-metrics.fullname" . }}
   namespace: {{ template "kube-state-metrics.namespace" . }}
   labels:
-    app.kubernetes.io/name: {{ template "kube-state-metrics.name" . }}
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
-    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-    app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+  {{- include "kube-state-metrics.labels" . | indent 4 }}
     {{- if .Values.customLabels }}
 {{ toYaml .Values.customLabels | indent 4 }}
     {{- end }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ template "kube-state-metrics.name" . }}
+    {{- include "kube-state-metrics.selectors" . | indent 6 }}
   replicas: {{ .Values.replicas }}
   {{- if .Values.autosharding.enabled }}
   serviceName: {{ template "kube-state-metrics.fullname" . }}
@@ -28,8 +24,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ template "kube-state-metrics.name" . }}
-        app.kubernetes.io/instance: "{{ .Release.Name }}"
+      {{- include "kube-state-metrics.labels" . | indent 8 }}
         {{- if .Values.customLabels }}
 {{ toYaml .Values.customLabels | indent 8 }}
         {{- end }}
