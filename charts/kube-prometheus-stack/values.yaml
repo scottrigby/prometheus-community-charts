@@ -669,6 +669,8 @@ grafana:
       ##
       annotations: {}
       multicluster: false
+      etcd:
+        multicluster: false
     datasources:
       enabled: true
       defaultDatasourceEnabled: true
