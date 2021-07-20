@@ -24,6 +24,7 @@ spec:
   groups:
   - name: kubernetes-resources
     rules:
+{{- if not (.Values.defaultRules.disabled.KubeCPUOvercommit | default false) }}
     - alert: KubeCPUOvercommit
       annotations:
         description: Cluster has overcommitted CPU resource requests for Pods and cannot tolerate node failure.
@@ -41,6 +42,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.KubeMemoryOvercommit | default false) }}
     - alert: KubeMemoryOvercommit
       annotations:
         description: Cluster has overcommitted memory resource requests for Pods and cannot tolerate node failure.
@@ -60,6 +63,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.KubeCPUQuotaOvercommit | default false) }}
     - alert: KubeCPUQuotaOvercommit
       annotations:
         description: Cluster has overcommitted CPU resource requests for Namespaces.
@@ -76,6 +81,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.KubeMemoryQuotaOvercommit | default false) }}
     - alert: KubeMemoryQuotaOvercommit
       annotations:
         description: Cluster has overcommitted memory resource requests for Namespaces.
@@ -92,6 +99,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.KubeQuotaAlmostFull | default false) }}
     - alert: KubeQuotaAlmostFull
       annotations:
         description: Namespace {{`{{`}} $labels.namespace {{`}}`}} is using {{`{{`}} $value | humanizePercentage {{`}}`}} of its {{`{{`}} $labels.resource {{`}}`}} quota.
@@ -108,6 +117,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.KubeQuotaFullyUsed | default false) }}
     - alert: KubeQuotaFullyUsed
       annotations:
         description: Namespace {{`{{`}} $labels.namespace {{`}}`}} is using {{`{{`}} $value | humanizePercentage {{`}}`}} of its {{`{{`}} $labels.resource {{`}}`}} quota.
@@ -124,6 +135,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.KubeQuotaExceeded | default false) }}
     - alert: KubeQuotaExceeded
       annotations:
         description: Namespace {{`{{`}} $labels.namespace {{`}}`}} is using {{`{{`}} $value | humanizePercentage {{`}}`}} of its {{`{{`}} $labels.resource {{`}}`}} quota.
@@ -140,6 +153,8 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.CPUThrottlingHigh | default false) }}
     - alert: CPUThrottlingHigh
       annotations:
         description: '{{`{{`}} $value | humanizePercentage {{`}}`}} throttling of CPU in namespace {{`{{`}} $labels.namespace {{`}}`}} for container {{`{{`}} $labels.container {{`}}`}} in pod {{`{{`}} $labels.pod {{`}}`}}.'
@@ -155,5 +170,6 @@ spec:
         severity: info
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
+{{- end }}
 {{- end }}
 {{- end }}

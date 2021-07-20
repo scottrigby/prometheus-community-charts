@@ -25,6 +25,7 @@ spec:
   groups:
   - name: kubernetes-storage
     rules:
+{{- if not (.Values.defaultRules.disabled.KubePersistentVolumeFillingUp | default false) }}
     - alert: KubePersistentVolumeFillingUp
       annotations:
         description: The PersistentVolume claimed by {{`{{`}} $labels.persistentvolumeclaim {{`}}`}} in Namespace {{`{{`}} $labels.namespace {{`}}`}} is only {{`{{`}} $value | humanizePercentage {{`}}`}} free.
@@ -43,6 +44,7 @@ spec:
         severity: critical
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
+{{- end }}
 {{- end }}
     - alert: KubePersistentVolumeFillingUp
       annotations:
@@ -65,6 +67,7 @@ spec:
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
+{{- if not (.Values.defaultRules.disabled.KubePersistentVolumeErrors | default false) }}
     - alert: KubePersistentVolumeErrors
       annotations:
         description: The persistent volume {{`{{`}} $labels.persistentvolume {{`}}`}} has status {{`{{`}} $labels.phase {{`}}`}}.
@@ -76,5 +79,6 @@ spec:
         severity: critical
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
+{{- end }}
 {{- end }}
 {{- end }}
